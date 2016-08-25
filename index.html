@@ -74,6 +74,7 @@
 <li><a href="#collapsing">Collapsing</a></li>
 <li><a href="#cdr3">CDR3 extraction</a></li>
 <li><a href="#generalusage">General usage notes</a></li>
+<li><a href="#calldcr">Calling Decombinator from other scripts</a></li>
 </ul>
 
 <hr>
@@ -137,7 +138,7 @@
 <li>By default, all output files will be gz compressed
 
 <ul>
-<li>This can be suppressed by using the "don't zip" flag: <code>-dz True</code>
+<li>This can be suppressed by using the "don't zip" flag: <code>-dz</code>
 </li>
 </ul>
 </li>
@@ -223,7 +224,7 @@ zcat <span class="pl-cce">\*</span>R1<span class="pl-cce">\*</span> <span class=
 <span class="pl-c"># Macs</span>
 gunzip -c <span class="pl-cce">\*</span>R1<span class="pl-cce">\*</span> <span class="pl-k">|</span> gzip <span class="pl-k">&gt;</span> R1.fq.gz</pre></div>
 
-<p>If you suspect your indexing might be wrong you can use the <code>'outputall'</code> flag (<code>-a True</code>). This outputs demultiplexed files using all possible combination of indexes used in our protocol, and can be used to identify the actual index combinations contained in a run and locate possible cross-contamination. Note that this is only recommended for troubleshooting and not for standard use as it will decrease the number of successfully demultiplexed reads per samples due to fuzzy index matching. </p>
+<p>If you suspect your indexing might be wrong you can use the <code>'outputall'</code> flag (<code>-a</code>). This outputs demultiplexed files using all possible combination of indexes used in our protocol, and can be used to identify the actual index combinations contained in a run and locate possible cross-contamination. Note that this is only recommended for troubleshooting and not for standard use as it will decrease the number of successfully demultiplexed reads per samples due to fuzzy index matching. </p>
 
 <p>Addition of new index sequences will currently require some slight modification of the code, although if people requested the use of a more easily edited external index file that could be incorporated in the next update.</p>
 
@@ -311,7 +312,7 @@ gunzip -c <span class="pl-cce">\*</span>R1<span class="pl-cce">\*</span> <span c
 <p>As Decombinator uses tags to identify different V/J genes it can only detect those genes that went into the tag set. Both human and mouse have an 'original' tag set, which contains all of the prototypical alleles for each 'functional' TCR gene (as defined by IMGT).
 There is also an 'extended' tag set for human alpha/beta genes, which includes tags for the prototypical alleles of all genes, regardless of predicted functionality. This is the default and recommended tag set for humans (due to increased specificity and sensitivity), but users can change this using the <code>-tg</code> flag.</p>
 
-<p>Users wanting to run <code>Decombinator.py</code> on their own, non-barcoded data should set the flag <code>-nbc True</code>. Choosing this option will stop Decombinator from outputting the additional fields required for demultiplexing: instead each classifier will simply be appended an abundance, indicating how many times each identifier appeared in that run. Note that this changes the default file extension to '.nbc', which users may wish to change.</p>
+<p>Users wanting to run <code>Decombinator.py</code> on their own, non-barcoded data should set the flag <code>-nbc</code>. Choosing this option will stop Decombinator from outputting the additional fields required for demultiplexing: instead each classifier will simply be appended an abundance, indicating how many times each identifier appeared in that run. Note that this changes the default file extension to '.nbc', which users may wish to change.</p>
 
 <p>The supplementary files required by Decombinator can be downloaded by the script from GitHub as it runs. If running offline, you need to <a href="https://github.com/innate2adaptive/Decombinator-Tags-FASTAs">download the files</a> to the directory where you run Decombinator, or specifically inform it of the path using the <code>-tfdir</code> flag.</p>
 
@@ -424,10 +425,10 @@ python CDR3translator.py -in dcr_AnotherSample1.freq -c b</pre></div>
 <p>Outputs a '.cdr3' file by default, which looks like:
 <code>CASSISGRLDTQYF, 1</code></p>
 
-<p>Alternatively you can use the 'dcr output' flag (<code>-do True</code>) to output DCRs alongside the CDR3s they encode, e.g.:
+<p>Alternatively you can use the 'dcr output' flag (<code>-do</code>) to output DCRs alongside the CDR3s they encode, e.g.:
 <code>18, 8, 5, 5, ATCAGCGGGAGATT:CASSISGRLDTQYF, 1</code></p>
 
-<p>You can also use the 'nonproductive' flag  (<code>-np True</code>) to output non-productive rearrangements to a separate file:
+<p>You can also use the 'nonproductive' flag  (<code>-np</code>) to output non-productive rearrangements to a separate file:
 <code>15, 3, 1, 5, CTGTATCAGGGGGCC:OOF_with_stop, 1</code></p>
 
 <p>The residues that make up the 'GXG' section of the 'FGXG' motif can also be included if desired, through use of the <code>-gxg</code> flag.</p>
@@ -481,7 +482,7 @@ python CDR3translator.py -in dcr_AnotherSample1.freq -c b</pre></div>
 <li>If running on data not produced using our protocol, likely only the Decombinator and translation scripts will be useful 
 
 <ul>
-<li>The <code>-nbc</code> (non-barcoding) flag will likely need to be set to <code>True</code> (unless you perform analogous UMI-positioning to <code>Demultiplexor.py</code>)</li>
+<li>The <code>-nbc</code> (non-barcoding) flag will likely need to be set (unless you perform analogous UMI-positioning to <code>Demultiplexor.py</code>)</li>
 <li>If your libraries contain TCRs in the forward orientation, or in both, this will also need to set with the <code>-or</code> flag</li>
 </ul>
 </li>
@@ -491,7 +492,7 @@ python CDR3translator.py -in dcr_AnotherSample1.freq -c b</pre></div>
 <a id="keep-track-of-whats-going-on" class="anchor" href="#keep-track-of-whats-going-on" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Keep track of what's going on</h2>
 
 <ul>
-<li>Using the 'dontgzip' flag ('-dz True') will stop the scripts automatically compressing the output data, which will minimise processing time (but take more space)
+<li>Using the 'dontgzip' flag ('-dz') will stop the scripts automatically compressing the output data, which will minimise processing time (but take more space)
 
 <ul>
 <li>It is recommend to keep gzipped options as default</li>
@@ -559,10 +560,48 @@ python CDR3translator.py -in dcr_AnotherSample1.freq -c b</pre></div>
 
 <hr>
 
+<h1 id="calldcr">
+<a id="calling-decombinator-from-other-python-scripts" class="anchor" href="#calling-decombinator-from-other-python-scripts" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Calling Decombinator from other Python scripts</h1>
+
+<p>As an open source Python script, <code>Decombinator</code> (and associated functions) can be called by other scripts, allowing advanced users to incorporate our rapid TCR assignation into their own scripts, permitting the development of highly bespoke functionalities.</p>
+
+<p>If you would like to call Decombinator from other scripts you need to make sure you fulfil the correct requirements upstream of actually looking for rearrangements. You will thus need to:</p>
+
+<ul>
+<li>Set up some 'dummy' input arguments, as there are some that Decombinator will expect</li>
+<li>Run the 'import_tcr_info' function, which sets up your environment with all of the required variables (by reading in the tags and FASTQs, building the tries etc)</li>
+</ul>
+
+<p>An example script which calls Decombinator might therefore look like this:</p>
+
+<div class="highlight highlight-source-python"><pre><span class="pl-k">import</span> Decombinator <span class="pl-k">as</span> dcr
+
+<span class="pl-c"># Set up dummy command line arguments arguments </span>
+inputargs <span class="pl-k">=</span> {<span class="pl-s"><span class="pl-pds">"</span>chain<span class="pl-pds">"</span></span>:<span class="pl-s"><span class="pl-pds">"</span>b<span class="pl-pds">"</span></span>, <span class="pl-s"><span class="pl-pds">"</span>species<span class="pl-pds">"</span></span>:<span class="pl-s"><span class="pl-pds">"</span>human<span class="pl-pds">"</span></span>, <span class="pl-s"><span class="pl-pds">"</span>tags<span class="pl-pds">"</span></span>:<span class="pl-s"><span class="pl-pds">"</span>extended<span class="pl-pds">"</span></span>, <span class="pl-s"><span class="pl-pds">"</span>tagfastadir<span class="pl-pds">"</span></span>:<span class="pl-s"><span class="pl-pds">"</span>no<span class="pl-pds">"</span></span>, <span class="pl-s"><span class="pl-pds">"</span>lenthreshold<span class="pl-pds">"</span></span>:<span class="pl-c1">130</span>, <span class="pl-s"><span class="pl-pds">"</span>allowNs<span class="pl-pds">"</span></span>:<span class="pl-c1">False</span>, <span class="pl-s"><span class="pl-pds">"</span>fastq<span class="pl-pds">"</span></span>:<span class="pl-s"><span class="pl-pds">"</span>blank<span class="pl-pds">"</span></span>}
+
+<span class="pl-c"># Initalise variables</span>
+dcr.import_tcr_info(inputargs)
+
+testseq <span class="pl-k">=</span> <span class="pl-s"><span class="pl-pds">"</span>CACTCTGAAGATCCAGCGCACACAGCAGGAGGACTCCGCCGTGTATCTCTGTGCCAGCAGCTTATTAGTGTTAGCGAGCTCCTACAATGAGCAGTTCTTCGGGCCAGGGACACGGCTCACCGTGCTAGAGGACCTGAAA<span class="pl-pds">"</span></span>
+
+<span class="pl-c"># Try and Decombine this test sequence</span>
+<span class="pl-c1">print</span> dcr.dcr(testseq, inputargs)</pre></div>
+
+<p>This script produces the following list output:
+<code>[42, 6, 2, 0, 'TTAGTGTTAGCGAG', 22, 118]</code></p>
+
+<p>The first five fields of this list correspond to the standard DCR index as described above, while the last two indicate the start position of the V tag and the end position of the J tag (thus definining the 'inter-tag region').</p>
+
+<p>Users may wish to therefore loop through their data that requires Decombining, and call this function on each iteration. However bear in mind that run in this manner Decombinator only checks whatever DNA orientation it's given: if you need to check both orientations then I suggest running one orientation through first, checking whether there's output, and if not then running the reverse orientation through again (which can be easily obtained using the Seq functionality of the Biopython package).</p>
+
+<p><sup><a href="#top">↑Top</a></sup></p>
+
+<hr>
+
 <h3>
 <a id="legacy-decombinator-versions" class="anchor" href="#legacy-decombinator-versions" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Legacy Decombinator versions</h3>
 
-<p>If users wish to view previous versions of Decombinator, v2.2 is available from the old GitHub repo <a href="https://github.com/uclinfectionimmunity/Decombinator/">uclinfectionimmunity / Decombinator</a>. However it is not recommended that this script be used for analysis as it lacks some key error-reduction features that have been integrated to subsequent versions, and is no longer supported.</p>
+<p>If users wish to view previous versions of Decombinator, v2.2 is available from the old GitHub repo <a href="https://github.com/uclinfectionimmunity/Decombinator/">uclinfectionimmunity / Decombinator</a>. However it is not recommended that this script be used for analysis as it lacks some key error-reduction features that have been integrated into subsequent versions, and is no longer supported.</p>
 
 <hr>
 
