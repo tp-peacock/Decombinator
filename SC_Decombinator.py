@@ -78,7 +78,7 @@
     # Files are hosted on GitHub, here: https://github.com/innate2adaptive/Decombinator-Tags-FASTAs
 
   # -nbc/--nobarcoding: Run Decombinator without any barcoding, i.e. use the whole read. 
-    # Recommended when running on data not Producesd using the Innate2Adaptive lab's ligation-mediated amplification protocol
+    # Recommended when running on data not produced using the Innate2Adaptive lab's ligation-mediated amplification protocol
 
 ##################
 ##### OUTPUT #####  
@@ -106,8 +106,6 @@ from Bio import SeqIO
 from Bio.Seq import Seq
 from acora import AcoraBuilder
 from time import time, strftime
- 
-from IPython import embed
 
 __version__ = '3.1'
 
