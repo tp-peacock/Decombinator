@@ -101,12 +101,11 @@ import collections as coll
 import argparse
 import gzip
 import Levenshtein as lev
+import collections
 from Bio import SeqIO
 from Bio.Seq import Seq
 from acora import AcoraBuilder
 from time import time, strftime
- 
-from IPython import embed
 
 __version__ = '3.1'
 
@@ -403,7 +402,7 @@ def dcr(read, inputargs, chain_order):
       if vdat[0] < lim:
         chain_type = v_chain_order[i][0]
         break
-    vindex = vdat[0] - v_seq_count
+    vindex = vdat[0] - v_seq_count #adjusts to give correct index if analysing for multiple chainnams
 
 
   if jdat:
@@ -431,13 +430,12 @@ def dcr(read, inputargs, chain_order):
 
   if jindex != "n/a":
     start_of_j = jdat[3]-len(j_seqs[jdat[0]])   
-
-    j_details = [vindex, jindex, read[0:start_of_j], 0, start_of_j, chain_type]
+    j_details = [vindex, jindex, read[0:jdat[3]], 0, jdat[3], chain_type]
     return j_details
 
   elif vindex != "n/a":
     end_of_v = vdat[3]+len(v_seqs[vdat[0]])
-    v_details = [vindex, jindex, read[end_of_v:len(read)], end_of_v, len(read), chain_type]
+    v_details = [vindex, jindex, read[vdat[3]:len(read)], vdat[3], len(read), chain_type]
     return v_details
   else:
     counts['VJ_assignment_failed'] += 1
@@ -834,8 +832,15 @@ if __name__ == '__main__':
 
   suffix = "." + inputargs['extension']
 
-  basefilenam = os.path.basename(inputargs['fastq'])
-  samplenam = os.path.splitext(basefilenam)[0]
+  bnam1 = os.path.basename(inputargs['fastq'])
+  snam1 = bnam1.split(".")[0]
+
+  if inputargs['fastq2']: #naming hack if two reads are included in input. Works with currently name data files separated by "_"
+    bnam2 = os.path.basename(inputargs['fastq2'])
+    snam2 = bnam2.split(".")[0]
+    samplenam = "_".join(collections.OrderedDict.fromkeys((snam1+"_"+snam2).split("_")).keys())
+  else:
+    samplenam = snam1
 
   # If chain had not been autodetected, write it out into output file
   if counts['chain_detected'] == 1:
