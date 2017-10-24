@@ -650,9 +650,7 @@ if __name__ == '__main__':
   print "Decombining FASTQ data..."
 
   suffix = "." + inputargs['extension']
-  samplenam = str(inputargs['fastq'].split(".")[0]) 
-  if os.sep in samplenam: # Cope with situation where specified FQ file is in a subdirectory
-    samplenam = samplenam.split(os.sep)[-1]
+  samplenam = (inputargs['fastq'].split("/")[-1]).split(".")[0]
 
   # If chain had not been autodetected, write it out into output file
   if counts['chain_detected'] == 1:
