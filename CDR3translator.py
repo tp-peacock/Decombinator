@@ -449,10 +449,10 @@ if __name__ == '__main__':
       outfile.close()
       
     elif inputargs['dcroutput'] == False:
-      suffix = "." + inputargs['extension']
-      outfilename = filename.split(".")[0] + suffix
+      suffix = "." + inputargs['extension']     
+      outfilename = (filename.split("/")[-1]).split(".")[0] + suffix
       outfile = open(outfilename, "w")
-
+      
       for x in cdr3_count:
         if use_freq == True:
           outtext = x + ", " + str(cdr3_count[x])
@@ -484,8 +484,7 @@ if __name__ == '__main__':
         
     if inputargs['nonproductive'] == True:  
       npsuffix = inputargs['npextension']
-
-      npfilename = filename.split(".")[0]+"." + npsuffix
+      npfilename = (filename.split("/")[-1]).split(".")[0] + "." + npsuffix
       npfile = open(npfilename, "w")
 
       for x in np_cdr3_count:
