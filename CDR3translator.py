@@ -434,8 +434,8 @@ if __name__ == '__main__':
     if inputargs['dcroutput'] == True:
       if inputargs['extension'] == 'cdr3': # Keep default suffixes unless specified otherwise
         suffix = '.dcrcdr3'
-        
-      outfilename = filename.split(".")[0] + suffix
+       
+      outfilename = (filename.split("/")[-1]).split(".")[0] + suffix
       outfile = open(outfilename, "w")
         
       for x in dcr_cdr3_count:
@@ -449,7 +449,8 @@ if __name__ == '__main__':
       outfile.close()
       
     elif inputargs['dcroutput'] == False:
-      suffix = "." + inputargs['extension']     
+      suffix = "." + inputargs['extension']
+     
       outfilename = (filename.split("/")[-1]).split(".")[0] + suffix
       outfile = open(outfilename, "w")
       
